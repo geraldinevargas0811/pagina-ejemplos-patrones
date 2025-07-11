@@ -19,14 +19,13 @@ export const PatternIllustration: React.FC<PatternIllustrationProps> = ({ patter
       setImageError(false);
       
       try {
-        // Obtener los ejemplos del patrón desde el JSON
-        const response = await fetch('/src/data/patrones.json');
-        const data = await response.json();
+        const data = await import('../../public/data/patrones.json');
+        const patronesData: any = data.default || data;
         
-        const patternData = data[pattern.id];
+        const patternData = patronesData[pattern.id as keyof typeof patronesData];
         if (patternData && patternData.ejemplos) {
           const imageUrls = patternData.ejemplos.map((ejemplo: any) => 
-            `/img/${pattern.id}-${ejemplo.nombre}.png`
+            `./img/${pattern.id}-${ejemplo.nombre}.png`
           );
           const names = patternData.ejemplos.map((ejemplo: any) => ejemplo.nombre);
           setImages(imageUrls);
